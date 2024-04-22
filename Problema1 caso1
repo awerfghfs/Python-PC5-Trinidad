@@ -1,1 +1,15 @@
+import pandas as pd
+
+df_airbnb = pd.read_csv("./data/airbnb.csv")
+
+filtered_df = df_airbnb[(df_airbnb['reviews'] > 10) & (df_airbnb['overall_satisfaction'] > 4)]
+
+# por puntuación y número de críticas
+sorted_df = filtered_df.sort_values(by=['overall_satisfaction', 'reviews'], ascending=[False, False])
+
+# Seleccionar las 3 opciones
+top_3_options = sorted_df.head(3)
+
+print("Las 3 mejores opciones de alojamiento para Alicia en Lisboa son:")
+print(top_3_options[['room_id', 'room_type', 'neighborhood', 'reviews', 'overall_satisfaction', 'accommodates', 'bedrooms', 'price']])
 
