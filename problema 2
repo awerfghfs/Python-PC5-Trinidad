@@ -1,1 +1,29 @@
+import pandas as pd
+
+df_wine = pd.read_csv("winemag-data-130k-v2.csv")
+
+print("Información general del dataframe:")
+print(df_wine.info())
+
+print("\nDescripción del dataframe:")
+print(df_wine.describe())
+
+# Renombrar columnas
+df_wine = df_wine.rename(columns={'points': 'puntuacion', 
+                                  'price': 'precio',
+                                  'country': 'pais',
+                                  'variety': 'variedad'})
+
+df_wine['precio_puntos'] = df_wine['precio'] / df_wine['puntuacion']
+df_wine['vino_barato'] = df_wine['precio'] < df_wine['precio'].quantile(0.25)
+df_wine['vino_caracteristico'] = df_wine['variedad'].apply(lambda x: True if x in ['Pinot Noir', 'Chardonnay', 'Cabernet Sauvignon'] else False)
+
+promedio_puntuacion_por_pais = df_wine.groupby('pais')['puntuacion'].mean().reset_index()
+print("\nPromedio de puntuación por país:")
+print(promedio_puntuacion_por_pais.head())
+
+precio_y_reviews_por_pais = df_wine.groupby('pais').agg({'precio': 'mean', 'review': 'sum'}).reset_index()
+precio_y_reviews_por_pais = precio_y_reviews_por_pais.sort_values(by='precio', ascending=False)
+print("\nPrecio promedio de vino y cantidad de reviews por país:")
+print(precio_y_reviews_por_pais.head())
 
