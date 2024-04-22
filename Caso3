@@ -1,1 +1,19 @@
+import pandas as pd
+
+df_airbnb = pd.read_csv("./data/airbnb.csv")
+
+df_diana = df_airbnb[(df_airbnb['price'] <= 50) & (df_airbnb['accommodates'] >= 1)]
+
+df_shared_rooms = df_diana[df_diana['room_type'] == 'Shared room']
+df_shared_rooms = df_shared_rooms.sort_values(by=['price', 'overall_satisfaction'], ascending=[True, False])
+
+df_other_rooms = df_diana[df_diana['room_type'] != 'Shared room']
+df_other_rooms = df_other_rooms.sort_values(by='price', ascending=True)
+
+df_combined = pd.concat([df_shared_rooms, df_other_rooms])
+
+top_10_properties = df_combined.head(10)
+
+print("Las 10 propiedades más baratas para Diana en Lisboa son:")
+print(top_10_properties[['room_id', 'room_type', 'neighborhood', 'price', 'overall_satisfaction']])
 
