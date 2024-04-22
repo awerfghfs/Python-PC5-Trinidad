@@ -1,1 +1,12 @@
+import pandas as pd
+
+df_airbnb = pd.read_csv("./data/airbnb.csv")
+
+roberto_df = df_airbnb[df_airbnb['host_id'] == 97503]
+clara_df = df_airbnb[df_airbnb['host_id'] == 90387]
+
+# un DataFrame 
+roberto_clara_df = pd.concat([roberto_df, clara_df])
+
+roberto_clara_df.to_excel("roberto.xls", index=False)
 
